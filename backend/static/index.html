@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy-to-Patient | Insurance Intelligence Assistant</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#161f2b; --panel2:#1c2733; --border:#2a3644;
+    --text:#e7edf3; --muted:#93a3b3; --accent:#4fd1c5; --accent2:#7c9cff;
+    --green:#22c55e; --red:#f87171; --yellow:#fbbf24;
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{padding:18px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  header h1{font-size:18px;margin:0;font-weight:600;}
+  header h1 span{color:var(--accent);}
+  .badge{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--muted);}
+  main{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+  .stepper{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+  .step{font-size:12px;padding:6px 12px;border-radius:16px;background:var(--panel);border:1px solid var(--border);color:var(--muted);}
+  .step.active{color:var(--bg);background:var(--accent);border-color:var(--accent);font-weight:600;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
+  .card h2{margin:0 0 4px;font-size:16px;}
+  .card p.sub{color:var(--muted);font-size:13px;margin:0 0 16px;}
+  .dropzone{border:2px dashed var(--border);border-radius:12px;padding:30px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;}
+  .dropzone:hover{border-color:var(--accent);color:var(--text);}
+  input[type=file]{display:none;}
+  button{background:var(--accent);color:#062b28;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
+  .fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:14px;}
+  .field{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+  .field .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .field .value{font-size:14px;margin-top:3px;}
+  .exclusions{margin-top:10px;font-size:13px;color:var(--muted);}
+  .exclusions ul{margin:6px 0 0 18px;padding:0;}
+  .chatbox{display:flex;gap:8px;margin-top:12px;}
+  .chatbox input{flex:1;padding:11px 14px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:14px;}
+  .answer{margin-top:18px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .answer .verdict{padding:14px 18px;font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;}
+  .answer .verdict.green{background:rgba(34,197,94,.12);color:var(--green);}
+  .answer .verdict.red{background:rgba(248,113,113,.12);color:var(--red);}
+  .answer .verdict.yellow{background:rgba(251,191,36,.12);color:var(--yellow);}
+  .answer .body{padding:16px 18px;}
+  .conf-pill{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);margin-left:auto;}
+  .conf-High{color:var(--green);border-color:var(--green);}
+  .conf-Medium{color:var(--yellow);border-color:var(--yellow);}
+  .conf-Low{color:var(--red);border-color:var(--red);}
+  .evidence-item{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:13px;}
+  .evidence-item .meta{color:var(--accent2);font-size:11px;margin-bottom:4px;font-weight:600;}
+  .missing{margin-top:12px;font-size:13px;color:var(--yellow);}
+  .missing ul{margin:6px 0 0 18px;}
+  .limitations{margin-top:10px;font-size:13px;color:var(--muted);}
+  form.tform{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+  form.tform label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;}
+  form.tform input, form.tform select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:13px;}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .result-box{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+  .result-box .amt{font-size:22px;font-weight:700;margin-top:6px;}
+  .result-box .lbl{font-size:12px;color:var(--muted);}
+  .steps{margin-top:16px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);}
+  .steps div{padding:3px 0;}
+  .hidden{display:none;}
+  .disclaimer{margin-top:14px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;}
+  @media(max-width:700px){.result-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Policy<span>-to-</span>Patient <span>Intelligence</span></h1>
+  <span class="badge" id="llmBadge">checking AI status…</span>
+</header>
+<main>
+  <div class="stepper">
+    <div class="step active" id="step1">1 · Upload Policy</div>
+    <div class="step" id="step2">2 · Ask AI</div>
+    <div class="step" id="step3">3 · Treatment Estimator</div>
+  </div>
+
+  <!-- STEP 1: UPLOAD -->
+  <div class="card" id="uploadCard">
+    <h2>Upload your insurance policy (PDF)</h2>
+    <p class="sub">We extract sum insured, co-pay, deductible, waiting periods, room-rent limit and exclusions — then index every page for cited Q&amp;A.</p>
+    <div class="dropzone" id="dropzone">
+      <div id="dzText">📄 Click to choose a policy PDF</div>
+      <input type="file" id="fileInput" accept="application/pdf">
+    </div>
+    <div id="uploadResult"></div>
+  </div>
+
+  <!-- STEP 2: CHAT -->
+  <div class="card hidden" id="chatCard">
+    <h2>Ask a coverage question</h2>
+    <p class="sub">Every answer cites the exact page &amp; section it came from.</p>
+    <div class="chatbox">
+      <input id="questionInput" placeholder="e.g. Is knee replacement covered?">
+      <button id="askBtn">Ask</button>
+    </div>
+    <div id="answerArea"></div>
+  </div>
+
+  <!-- STEP 3: TREATMENT ESTIMATOR -->
+  <div class="card hidden" id="estimateCard">
+    <h2>Treatment cost &amp; coverage estimator</h2>
+    <p class="sub">Enter a treatment scenario to estimate cost, potential coverage and out-of-pocket expense.</p>
+    <form class="tform" id="tform">
+      <div>
+        <label>Treatment</label>
+        <select id="treatment"></select>
+      </div>
+      <div>
+        <label>City</label>
+        <select id="city"></select>
+      </div>
+      <div>
+        <label>Hospital Type</label>
+        <select id="hospital_type"><option>Private</option><option>Government</option></select>
+      </div>
+      <div>
+        <label>Patient Age</label>
+        <input type="number" id="age" placeholder="55">
+      </div>
+      <div>
+        <label>Pre-existing condition?</label>
+        <select id="pre_existing"><option>Unknown</option><option>Yes</option><option>No</option></select>
+      </div>
+      <div>
+        <label>Room Type</label>
+        <select id="room_type"><option value="">Not specified</option><option>General</option><option>Private</option><option>ICU</option></select>
+      </div>
+    </form>
+    <div style="margin-top:14px;"><button id="estimateBtn">Estimate</button></div>
+    <div id="estimateResult"></div>
+  </div>
+</main>
+
+<script>
+const API = "";
+let sessionId = null;
+let policyFields = null;
+let lastScenario = null;
+
+fetch(API + "/api/status").then(r=>r.json()).then(s=>{
+  document.getElementById('llmBadge').textContent = s.llm_enabled ? "🤖 LLM reasoning: ON" : "⚙️ Rule-based mode (no API key set)";
+  const tSel = document.getElementById('treatment');
+  const cSel = document.getElementById('city');
+  s.treatments_in_dataset.forEach(t=>{ const o=document.createElement('option'); o.textContent=t; tSel.appendChild(o); });
+  s.cities_in_dataset.forEach(c=>{ const o=document.createElement('option'); o.textContent=c; cSel.appendChild(o); });
+});
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+dropzone.onclick = () => fileInput.click();
+fileInput.onchange = async () => {
+  const f = fileInput.files[0];
+  if(!f) return;
+  document.getElementById('dzText').textContent = "⏳ Extracting & indexing " + f.name + " …";
+  const fd = new FormData();
+  fd.append('file', f);
+  const res = await fetch(API + "/api/upload", { method:"POST", body: fd });
+  const data = await res.json();
+  if(data.error){ document.getElementById('uploadResult').innerHTML = `<p style="color:#f87171">${data.error}</p>`; return; }
+  sessionId = data.session_id;
+  policyFields = data.policy_fields;
+  document.getElementById('dzText').textContent = `✅ ${data.filename} — ${data.num_pages} pages, ${data.num_chunks} chunks indexed`;
+  renderPolicyFields(data.policy_fields, data.scanned_pages_detected);
+  document.getElementById('chatCard').classList.remove('hidden');
+  document.getElementById('estimateCard').classList.remove('hidden');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('step3').classList.add('active');
+};
+
+function fmtAmt(n){ return n==null ? "Not found" : "₹" + Number(n).toLocaleString('en-IN'); }
+
+function renderPolicyFields(f, scanned){
+  const wrap = document.getElementById('uploadResult');
+  let scannedNote = scanned && scanned.length ? `<p style="color:#fbbf24;font-size:12px;margin-top:10px;">⚠️ Pages ${scanned.join(', ')} look scanned/low-text — OCR fallback would improve extraction there.</p>` : "";
+  wrap.innerHTML = `
+    <div class="fields-grid">
+      <div class="field"><div class="label">Sum Insured</div><div class="value">${fmtAmt(f.sum_insured)}</div></div>
+      <div class="field"><div class="label">Deductible</div><div class="value">${fmtAmt(f.deductible)}</div></div>
+      <div class="field"><div class="label">Co-payment</div><div class="value">${f.copayment || "Not found"}</div></div>
+      <div class="field"><div class="label">Room Rent Limit</div><div class="value">${f.room_rent_limit || "Not found"}</div></div>
+      <div class="field"><div class="label">Waiting Period (General)</div><div class="value">${f.waiting_period.general || "Not found"}</div></div>
+      <div class="field"><div class="label">Waiting Period (Pre-existing)</div><div class="value">${f.waiting_period.pre_existing || "Not found"}</div></div>
+    </div>
+    <div class="exclusions"><strong>Exclusions detected:</strong>
+      ${f.exclusions && f.exclusions.length ? `<ul>${f.exclusions.map(e=>`<li>${e}</li>`).join('')}</ul>` : " none confidently detected"}
+    </div>
+    ${scannedNote}
+  `;
+}
+
+document.getElementById('askBtn').onclick = askQuestion;
+document.getElementById('questionInput').addEventListener('keydown', e=>{ if(e.key==='Enter') askQuestion(); });
+
+async function askQuestion(){
+  const q = document.getElementById('questionInput').value.trim();
+  if(!q || !sessionId) return;
+  const area = document.getElementById('answerArea');
+  area.innerHTML = `<p style="color:#93a3b3;margin-top:14px;">Retrieving relevant policy clauses…</p>`;
+  const res = await fetch(API + "/api/ask", {
+    method:"POST", headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ session_id: sessionId, question: q })
+  });
+  const a = await res.json();
+  const colorClass = a.verdict === "Potentially Covered" ? "green" : (a.verdict === "Likely Not Covered" ? "red" : "yellow");
+  area.innerHTML = `
+    <div class="answer">
+      <div class="verdict ${colorClass}">${a.emoji} ${a.verdict} <span class="conf-pill conf-${a.confidence}">${a.confidence} confidence</span></div>
+      <div class="body">
+        <p>${a.explanation}</p>
+        ${a.limitations && a.limitations.length ? `<div class="limitations"><strong>Limitations:</strong><ul>${a.limitations.map(l=>`<li>${l}</li>`).join('')}</ul></div>` : ""}
+        <div style="margin-top:14px;"><strong style="font-size:13px;">📄 Evidence</strong>
+          ${a.evidence.length ? a.evidence.map(e=>`<div class="evidence-item"><div class="meta">${e.section} — Page ${e.page} (match score ${e.score})</div>${e.text.slice(0,320)}${e.text.length>320?'…':''}</div>`).join('') : `<p style="color:#93a3b3;font-size:13px;">No matching clauses retrieved.</p>`}
+        </div>
+        ${a.missing_information && a.missing_information.length ? `<div class="missing"><strong>⚠️ Missing information</strong><ul>${a.missing_information.map(m=>`<li>${m}</li>`).join('')}</ul></div>` : ""}
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById('estimateBtn').onclick = runEstimate;
+
+async function runEstimate(){
+  if(!sessionId) return;
+  const scenario = {
+    session_id: sessionId,
+    treatment: document.getElementById('treatment').value,
+    city: document.getElementById('city').value,
+    hospital_type: document.getElementById('hospital_type').value,
+    age: document.getElementById('age').value,
+    pre_existing: document.getElementById('pre_existing').value,
+    room_type: document.getElementById('room_type').value,
+  };
+  lastScenario = scenario;
+  const res = await fetch(API + "/api/estimate", {
+    method:"POST", headers:{'Content-Type':'application/json'}, body: JSON.stringify(scenario)
+  });
+  const r = await res.json();
+  renderEstimate(r);
+}
+
+function renderEstimate(r){
+  const wrap = document.getElementById('estimateResult');
+  const range = r.estimated_treatment_cost_range;
+  const conf = r.confidence;
+  wrap.innerHTML = `
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="lbl">Estimated Treatment Cost</div>
+        <div class="amt">${range ? fmtAmt(range.min)+' – '+fmtAmt(range.max) : "N/A"}</div>
+      </div>
+      <div class="result-box">
+        <div class="lbl">Potentially Covered</div>
+        <div class="amt" style="color:#22c55e">${fmtAmt(r.calculation.potential_coverage)}</div>
+      </div>
+      <div class="result-box">
+        <div class="lbl">Estimated Out-of-Pocket</div>
+        <div class="amt" style="color:#f87171">${fmtAmt(r.calculation.estimated_out_of_pocket)}</div>
+      </div>
+    </div>
+    <p style="margin-top:14px;"><span class="conf-pill conf-${conf}">${conf} confidence</span></p>
+    ${r.missing_information.length ? `<div class="missing"><strong>⚠️ Missing information</strong><ul>${r.missing_information.map(m=>`<li>${m}</li>`).join('')}</ul></div>` : ""}
+    <div class="steps"><strong style="color:#e7edf3;">Calculation steps</strong>${r.calculation.breakdown_steps.map(s=>`<div>• ${s}</div>`).join('')}</div>
+    <p class="disclaimer">${r.disclaimer}</p>
+  `;
+}
+</script>
+</body>
+</html>

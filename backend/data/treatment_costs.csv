@@ -1,0 +1,64 @@
+treatment,city,hospital_type,min_cost,max_cost,typical_cost,avg_los_days
+Knee Replacement,Pune,Private,120000,250000,180000,5
+Knee Replacement,Pune,Government,60000,120000,90000,6
+Knee Replacement,Mumbai,Private,150000,300000,220000,5
+Knee Replacement,Mumbai,Government,70000,140000,100000,6
+Knee Replacement,Bangalore,Private,140000,280000,200000,5
+Knee Replacement,Delhi,Private,130000,270000,190000,5
+Hip Replacement,Pune,Private,180000,350000,260000,6
+Hip Replacement,Mumbai,Private,200000,400000,300000,6
+Hip Replacement,Bangalore,Private,190000,380000,280000,6
+Cataract Surgery,Pune,Private,30000,70000,45000,1
+Cataract Surgery,Pune,Government,8000,20000,14000,1
+Cataract Surgery,Mumbai,Private,35000,80000,52000,1
+Cataract Surgery,Bangalore,Private,32000,75000,48000,1
+Cataract Surgery,Delhi,Private,30000,72000,46000,1
+Appendectomy,Pune,Private,60000,120000,85000,3
+Appendectomy,Pune,Government,20000,45000,30000,4
+Appendectomy,Mumbai,Private,70000,140000,95000,3
+Appendectomy,Bangalore,Private,65000,130000,90000,3
+CABG,Pune,Private,250000,500000,350000,7
+CABG,Mumbai,Private,300000,600000,420000,7
+CABG,Bangalore,Private,280000,560000,400000,7
+CABG,Delhi,Private,270000,540000,390000,7
+Angioplasty,Pune,Private,150000,350000,220000,3
+Angioplasty,Mumbai,Private,180000,400000,260000,3
+Angioplasty,Bangalore,Private,170000,380000,250000,3
+Normal Delivery,Pune,Private,40000,90000,60000,3
+Normal Delivery,Pune,Government,5000,15000,9000,3
+Normal Delivery,Mumbai,Private,50000,110000,75000,3
+C-Section Delivery,Pune,Private,70000,150000,100000,4
+C-Section Delivery,Mumbai,Private,90000,180000,120000,4
+Appendix Laparoscopy,Pune,Private,70000,140000,100000,3
+Gallbladder Removal,Pune,Private,80000,160000,110000,4
+Gallbladder Removal,Mumbai,Private,90000,180000,130000,4
+Hernia Surgery,Pune,Private,50000,110000,75000,3
+Hernia Surgery,Mumbai,Private,60000,130000,88000,3
+Hernia Surgery,Bangalore,Private,55000,120000,82000,3
+Dialysis (per session),Pune,Private,1500,4000,2500,0
+Dialysis (per session),Mumbai,Private,2000,5000,3200,0
+Chemotherapy (per cycle),Pune,Private,20000,80000,45000,1
+Chemotherapy (per cycle),Mumbai,Private,25000,100000,55000,1
+Chemotherapy (per cycle),Bangalore,Private,22000,90000,50000,1
+Fracture Surgery (ORIF),Pune,Private,90000,200000,140000,4
+Fracture Surgery (ORIF),Mumbai,Private,100000,230000,160000,4
+Tonsillectomy,Pune,Private,35000,80000,55000,2
+Tonsillectomy,Mumbai,Private,40000,90000,62000,2
+Dengue (Inpatient),Pune,Private,25000,70000,42000,4
+Dengue (Inpatient),Pune,Government,5000,15000,9000,4
+Dengue (Inpatient),Mumbai,Private,30000,80000,50000,4
+Typhoid (Inpatient),Pune,Private,20000,55000,35000,4
+"COVID-19 (Inpatient, moderate)",Pune,Private,40000,120000,70000,6
+"COVID-19 (Inpatient, moderate)",Mumbai,Private,50000,150000,90000,6
+Cancer Surgery (Major),Pune,Private,200000,600000,380000,8
+Cancer Surgery (Major),Mumbai,Private,250000,700000,450000,8
+Cataract Surgery (Both Eyes),Pune,Private,55000,130000,85000,2
+Spinal Surgery,Pune,Private,220000,500000,340000,7
+Spinal Surgery,Mumbai,Private,260000,600000,400000,7
+Piles Surgery,Pune,Private,45000,100000,68000,3
+Piles Surgery,Mumbai,Private,50000,115000,78000,3
+Kidney Stone Removal,Pune,Private,60000,140000,95000,3
+Kidney Stone Removal,Mumbai,Private,70000,160000,110000,3
+Cochlear Implant,Pune,Private,500000,900000,700000,4
+Maternity Package (Normal),Pune,Private,45000,95000,65000,3
+Maternity Package (C-Section),Pune,Private,75000,160000,110000,4

@@ -1,0 +1,6 @@
+Flask>=3.0
+pdfplumber>=0.11
+scikit-learn>=1.4
+pandas>=2.0
+requests>=2.31
+reportlab>=4.0

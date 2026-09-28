@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+backend/uploads/*.pdf
+!.gitkeep
+.env
+.DS_Store
